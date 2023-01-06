@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">No Ink</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="add_todo_text">add todo</string>
+    <string name="delete_completed_todos">Delete completed Todos</string>
+    <string name="delete_icon">Delete Icon Button</string>
+    <string name="add_note_button">Add Note Button</string>
+    <string name="notes_title">Notes Title</string>
+    <string name="no_todo_image">No Todo Image</string>
+    <string name="no_trash_image">No Trash Image</string>
+    <string name="no_note_image">No Note Image</string>
+    <string name="no_notes_text">No Notes</string>
+    <string name="nothing_to_show">No Trash</string>
+    <string name="no_todos">No Todos</string>
+    <string name="item_empty_trash">Empty Trash</string>
+    <string name="horizontal_view">Horizontal View</string>
+    <string name="verical_view">Verical View</string>
+    <string name="layout_view">layout view</string>
+</resources>
