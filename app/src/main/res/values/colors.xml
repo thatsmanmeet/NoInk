@@ -17,10 +17,10 @@
 
     <!--  color names for notes background  -->
 
-    <color name="blue_bg">#1A4D98</color>
-    <color name="pink_bg">#FD8A8A</color>
-    <color name="purple_bg">#ADA2FF</color>
-    <color name="green_bg">#C0EEE4</color>
-    <color name="red_bg">#E97777</color>
-    <color name="yellow_bg">#FFF9CA</color>
+    <color name="blue_default">#1A4D98</color>
+    <color name="pink_bg">#F4378F</color>
+    <color name="purple_bg">#673AB7</color>
+    <color name="green_bg">#8BC34A</color>
+    <color name="red">#F44336</color>
+    <color name="yellow">#FFC107</color>
 </resources>

@@ -17,4 +17,5 @@
     <string name="horizontal_view">Horizontal View</string>
     <string name="verical_view">Verical View</string>
     <string name="layout_view">layout view</string>
+    <string name="change_color">change color</string>
 </resources>

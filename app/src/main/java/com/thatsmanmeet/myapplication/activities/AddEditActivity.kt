@@ -1,18 +1,22 @@
 package com.thatsmanmeet.myapplication.activities
+
 import android.content.res.Configuration
-import android.media.MediaPlayer
 import android.os.Bundle
 import android.text.Html
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.thatsmanmeet.myapplication.Color.ColorData
 import com.thatsmanmeet.myapplication.R
 import com.thatsmanmeet.myapplication.databinding.ActivityAddEditBinding
 import com.thatsmanmeet.myapplication.helpers.DateHelper
+import com.thatsmanmeet.myapplication.helpers.MusicHelper
 import com.thatsmanmeet.myapplication.room.note.Note
 import com.thatsmanmeet.myapplication.room.note.NoteViewModel
 import com.thatsmanmeet.myapplication.room.trash.Trash
@@ -25,6 +29,8 @@ class AddEditActivity : AppCompatActivity() {
     private var date: String? = ""
     private var flag = 0
     private var noteID : Long = 0
+    private var noteBackgroundColor : Int = R.color.blue_default
+    private var inflatedMenu : Menu? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAddEditBinding.inflate(layoutInflater)
@@ -41,6 +47,7 @@ class AddEditActivity : AppCompatActivity() {
             val desc = intent.getStringExtra("desc")
             val id = intent.getLongExtra("id", 0)
             date = intent.getStringExtra("date")
+            noteBackgroundColor = intent.getIntExtra("note_bg_color",R.color.blue_default)
             if (title!!.isNotEmpty() && desc!!.isNotEmpty()) {
                 binding.etTitle.setText(title)
                 binding.etDescription.setText(desc)
@@ -56,7 +63,7 @@ class AddEditActivity : AppCompatActivity() {
             submitData()
             finish()
         }
-
+        binding.tvDate.text = if(date != null) date else DateHelper().getCurrentDate()
     }
 
     private fun setActionBar() {
@@ -114,7 +121,8 @@ class AddEditActivity : AppCompatActivity() {
                             null,
                             titleText,
                             "empty note",
-                            DateHelper().getCurrentDate()
+                            DateHelper().getCurrentDate(),
+                            noteBackgroundColor
                         )
                     )
                     binding.etTitle.text?.clear()
@@ -125,7 +133,8 @@ class AddEditActivity : AppCompatActivity() {
                             null,
                             "Untitled",
                             noteText,
-                            DateHelper().getCurrentDate()
+                            DateHelper().getCurrentDate(),
+                            noteBackgroundColor
                         )
                     )
                     binding.etTitle.text?.clear()
@@ -140,7 +149,8 @@ class AddEditActivity : AppCompatActivity() {
                         noteID,
                         binding.etTitle.text.toString(),
                         binding.etDescription.text.toString(),
-                        date = date
+                        date = date,
+                        noteBackgroundColor
                     )
                 )
             }
@@ -161,6 +171,8 @@ class AddEditActivity : AppCompatActivity() {
                 R.color.white, null))
             binding.etTitle.backgroundTintList = ResourcesCompat.getColorStateList(resources,
                 R.color.blue,null)
+            binding.tvDate.setTextColor(ResourcesCompat.getColor(resources,
+                R.color.white, null))
         } else {
             window.statusBarColor = getColor(R.color.blue)
             window.navigationBarColor = getColor(R.color.white)
@@ -173,6 +185,8 @@ class AddEditActivity : AppCompatActivity() {
                 R.color.black, null))
             binding.etTitle.backgroundTintList = ResourcesCompat.getColorStateList(resources,
                 R.color.blue,null)
+            binding.tvDate.setTextColor(ResourcesCompat.getColor(resources,
+                R.color.black, null))
         }
         super.onConfigurationChanged(newConfig)
     }
@@ -185,8 +199,7 @@ class AddEditActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId){
-            R.id.action_delete -> {
-
+            R.id.action_delete_note -> {
                MaterialAlertDialogBuilder(this)
                    .setIcon(R.drawable.ic_delete)
                    .setTitle("Delete Note")
@@ -196,6 +209,7 @@ class AddEditActivity : AppCompatActivity() {
                        val currentNoteTitle = intent.getStringExtra("title")
                        val currentNoteDescription = intent.getStringExtra("desc")
                        val currentNoteDate = intent.getStringExtra("date")
+                       val currentNoteColor = intent.getIntExtra("notes_bg_color",R.color.blue_default)
                        var deleteFlag = 0
                        if(!currentNoteTitle.isNullOrEmpty() && !currentNoteDescription.isNullOrEmpty()){
                            trashViewModel.insertTrash(
@@ -203,7 +217,8 @@ class AddEditActivity : AppCompatActivity() {
                                    id = noteID,
                                    title = currentNoteTitle,
                                    description = currentNoteDescription,
-                                   date = currentNoteDate
+                                   date = currentNoteDate,
+                                   backgroundColor = noteBackgroundColor
                                )
                            )
                            deleteFlag = 1
@@ -212,10 +227,11 @@ class AddEditActivity : AppCompatActivity() {
                            id = currentNoteId,
                            title = currentNoteTitle,
                            description = currentNoteDescription,
-                           date =  currentNoteDate
+                           date =  currentNoteDate,
+                           backgroundColor = currentNoteColor
                        ))
                        if(deleteFlag == 1){
-                           deleteSound()
+                           MusicHelper(this).deleteSound()
                        }
                        finish()
                    }
@@ -223,27 +239,60 @@ class AddEditActivity : AppCompatActivity() {
 
                    }.show()
             }
+            R.id.action_pick_color -> {
+                val builder = AlertDialog.Builder(this)
+                builder.setTitle("Choose a background color")
+                val colorList = ColorData().colors
+                val colorNames = mutableListOf<String>()
+                for(color in colorList){
+                    colorNames.add(color.colorName)
+                }
+                var checkedItem = 0
+                builder.setItems(colorNames.toTypedArray()){_,index->
+                    when(index){
+                        0 -> {
+                            checkedItem = 0
+                            noteBackgroundColor = colorList[checkedItem].colorInt
+                        }
+                        1 -> {
+                            checkedItem = 1
+                            noteBackgroundColor = colorList[checkedItem].colorInt
+                        }
+                        2 -> {
+                            checkedItem = 2
+                            noteBackgroundColor = colorList[checkedItem].colorInt
+                        }
+                        3 -> {
+                            checkedItem = 3
+                            noteBackgroundColor = colorList[checkedItem].colorInt
+                        }
+                        4 -> {
+                            checkedItem = 4
+                            noteBackgroundColor = colorList[checkedItem].colorInt
+                        }
+                        5 -> {
+                            checkedItem = 5
+                            noteBackgroundColor = colorList[checkedItem].colorInt
+                        }
+                    }
+                    inflatedMenu?.findItem(R.id.action_pick_color)?.icon?.setTint(ContextCompat.getColor(this,noteBackgroundColor))
+                }
+                builder.show()
+            }
         }
         return true
     }
 
-    private fun deleteSound() {
-        val mp = MediaPlayer.create(this, R.raw.delete)
-        mp.start()
-        mp.setOnCompletionListener{
-            it.stop()
-            it.reset()
-            it.release()
-        }
-    }
-
     override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
-        menu!!.findItem(R.id.action_delete).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
+        menu!!.findItem(R.id.action_pick_color).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
+        menu.findItem(R.id.action_delete_note).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
+        menu.findItem(R.id.action_pick_color).icon!!.setTint(ContextCompat.getColor(this,noteBackgroundColor))
+        inflatedMenu = menu // this is done to access the properties of this menu from outside this method.
         return true
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        MenuInflater(this).inflate(R.menu.menu_bar,menu)
+        MenuInflater(this).inflate(R.menu.notes_menu_bar,menu)
         return true
     }
 

@@ -2,7 +2,6 @@ package com.thatsmanmeet.myapplication.adapter
 
 import android.content.Context
 import android.graphics.Paint
-import android.media.MediaPlayer
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +9,7 @@ import android.widget.CheckBox
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.thatsmanmeet.myapplication.R
+import com.thatsmanmeet.myapplication.helpers.MusicHelper
 import com.thatsmanmeet.myapplication.room.todo.Todo
 
 
@@ -41,7 +41,7 @@ class TodoAdapter(private val context: Context, private val listener: TodoInterf
         holder.checkBox.setOnClickListener {
             listener.onCheckBoxClicked(currentTodo)
             if (holder.checkBox.isChecked) {
-                playSound()
+                MusicHelper(context.applicationContext).playSound()
                 holder.todoText.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
             } else {
                 holder.todoText.paintFlags = 0
@@ -62,22 +62,13 @@ class TodoAdapter(private val context: Context, private val listener: TodoInterf
         notifyDataSetChanged()
     }
 
-    private fun playSound() {
-        val mp = MediaPlayer.create(context.applicationContext, R.raw.done)
-        mp.start()
-        mp.setOnCompletionListener{
-            it.stop()
-            it.reset()
-            it.release()
+    interface TodoInterface {
+        fun onCheckBoxClicked(todo: Todo) {
+
         }
-    }
-}
 
-interface TodoInterface {
-    fun onCheckBoxClicked(todo: Todo) {
+        fun onTodoClicked(todo: Todo) {
 
-    }
-    fun onTodoClicked(todo: Todo){
-
+        }
     }
 }

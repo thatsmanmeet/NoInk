@@ -13,17 +13,31 @@
             android:id="@+id/etTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Title"
+            android:hint="Note Title"
             android:layout_marginStart="3dp"
             android:layout_marginEnd="3dp"
             android:importantForAutofill="no"
             android:inputType="text"
             android:maxHeight="50dp"
+            android:textSize="25sp"
             android:textColorHint="@color/hint"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:ignore="HardcodedText" />
+
+    <TextView
+        android:id="@+id/tvDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="11sp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="3dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="2dp"
+        app:layout_constraintTop_toBottomOf="@id/etTitle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
     <EditText
         android:id="@+id/etDescription"
@@ -36,11 +50,12 @@
         android:inputType="none"
         android:maxHeight="300dp"
         android:background="@null"
-        android:padding="8dp"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etTitle"
+        app:layout_constraintTop_toBottomOf="@+id/tvDate"
         tools:ignore="HardcodedText,TextContrastCheck" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton

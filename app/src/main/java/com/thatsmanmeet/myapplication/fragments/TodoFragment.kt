@@ -2,7 +2,6 @@ package com.thatsmanmeet.myapplication.fragments
 
 
 import android.content.res.Configuration
-import android.media.MediaPlayer
 import android.os.Bundle
 import android.view.*
 import android.widget.TextView
@@ -17,12 +16,12 @@ import com.google.android.material.textfield.TextInputEditText
 import com.thatsmanmeet.myapplication.R
 import com.thatsmanmeet.myapplication.databinding.FragmentTodoBinding
 import com.thatsmanmeet.myapplication.adapter.TodoAdapter
-import com.thatsmanmeet.myapplication.adapter.TodoInterface
+import com.thatsmanmeet.myapplication.helpers.MusicHelper
 import com.thatsmanmeet.myapplication.room.todo.Todo
 import com.thatsmanmeet.myapplication.room.todo.TodoViewModel
 
 
-class TodoFragment : Fragment(), TodoInterface {
+class TodoFragment : Fragment(), TodoAdapter.TodoInterface {
 
     private lateinit var binding : FragmentTodoBinding
     private lateinit var viewModel : TodoViewModel
@@ -87,7 +86,7 @@ class TodoFragment : Fragment(), TodoInterface {
                             }
                     }
                         if(isDeleted){
-                            deleteSound()
+                            MusicHelper(requireContext()).deleteSound()
                         }
                     }.setNegativeButton("No"){_,_->
 
@@ -146,18 +145,9 @@ class TodoFragment : Fragment(), TodoInterface {
                 }
             }.setNegativeButton("Delete"){_,_->
                 viewModel.deleteTodo(Todo(id,text,status))
+                MusicHelper(requireActivity().applicationContext).deleteSound()
             }
             .show()
-    }
-
-    private fun deleteSound() {
-        val mp = MediaPlayer.create(requireContext(), R.raw.delete)
-        mp.start()
-        mp.setOnCompletionListener{
-            it.stop()
-            it.reset()
-            it.release()
-        }
     }
 
     override fun onCheckBoxClicked(todo: Todo) {

@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.thatsmanmeet.myapplication.R
 import com.thatsmanmeet.myapplication.room.trash.Trash
@@ -23,7 +24,7 @@ class TrashAdapter(private val context: Context, private val listener: ITrashRVA
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrashViewHolder {
         val viewHolder =
-            TrashViewHolder(LayoutInflater.from(context).inflate(R.layout.trash_item, parent, false))
+            TrashViewHolder(LayoutInflater.from(context).inflate(R.layout.notes_item_new, parent, false))
         viewHolder.noteCard.setOnClickListener {
             listener.onNoteCardClicked(allTrashNotes[viewHolder.adapterPosition])
         }
@@ -35,6 +36,7 @@ class TrashAdapter(private val context: Context, private val listener: ITrashRVA
         holder.title.text = currentNote.title
         holder.description.text = currentNote.description
         holder.dateBox.text = currentNote.date
+        holder.noteCard.setBackgroundColor(ContextCompat.getColor(context,currentNote.backgroundColor))
     }
 
     override fun getItemCount(): Int {

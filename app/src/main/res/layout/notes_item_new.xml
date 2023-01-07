@@ -63,7 +63,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:gravity="start"
-            android:textColor="@color/grayish"
+            android:textColor="#CBFFFFFF"
             android:textSize="11sp"
             android:padding="5dp"
             android:layout_marginStart="5dp"

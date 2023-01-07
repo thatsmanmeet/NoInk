@@ -110,6 +110,7 @@ class NotesFragment : Fragment(), INotesRVAdapter {
             it.putExtra("title", note.title)
             it.putExtra("desc", note.description)
             it.putExtra("date",note.date)
+            it.putExtra("note_bg_color",note.backgroundColor)
             startActivity(it)
         }
     }

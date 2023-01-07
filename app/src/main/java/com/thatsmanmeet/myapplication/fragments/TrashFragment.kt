@@ -1,7 +1,6 @@
 package com.thatsmanmeet.myapplication.fragments
 
 import android.content.res.Configuration
-import android.media.MediaPlayer
 import android.os.Bundle
 import android.view.*
 import androidx.core.content.res.ResourcesCompat
@@ -13,6 +12,7 @@ import com.thatsmanmeet.myapplication.R
 import com.thatsmanmeet.myapplication.databinding.FragmentTrashBinding
 import com.thatsmanmeet.myapplication.adapter.ITrashRVAdapter
 import com.thatsmanmeet.myapplication.adapter.TrashAdapter
+import com.thatsmanmeet.myapplication.helpers.MusicHelper
 import com.thatsmanmeet.myapplication.room.note.Note
 import com.thatsmanmeet.myapplication.room.note.NoteViewModel
 import com.thatsmanmeet.myapplication.room.trash.Trash
@@ -71,13 +71,14 @@ class TrashFragment : Fragment(), ITrashRVAdapter {
                         id = trash.id,
                         title = trash.title,
                         description = trash.description,
-                        date = trash.date
+                        date = trash.date,
+                        backgroundColor = trash.backgroundColor
                     )
                 )
                 viewModel.deleteTrash(trash)
             }.setNegativeButton("Delete"){_,_->
                 viewModel.deleteTrash(trash)
-                deleteSound()
+                MusicHelper(requireActivity().applicationContext).deleteSound()
             }.show()
     }
 
@@ -103,17 +104,6 @@ class TrashFragment : Fragment(), ITrashRVAdapter {
         }
         super.onConfigurationChanged(newConfig)
     }
-
-    private fun deleteSound() {
-        val mp = MediaPlayer.create(requireContext(), R.raw.delete)
-        mp.start()
-        mp.setOnCompletionListener {
-            it.stop()
-            it.reset()
-            it.release()
-        }
-    }
-
     override fun onPrepareOptionsMenu(menu: Menu) {
         menu.findItem(R.id.miEmptyTrash)!!.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
         super.onPrepareOptionsMenu(menu)
@@ -135,7 +125,7 @@ class TrashFragment : Fragment(), ITrashRVAdapter {
                         viewModel.allTrashNotes.observe(this@TrashFragment){
                             if(it.isNotEmpty()){
                                 viewModel.clearTrash()
-                                deleteSound()
+                                MusicHelper(requireActivity().applicationContext).deleteSound()
                             }
                         }
                     }.setNegativeButton("No"){_,_->
