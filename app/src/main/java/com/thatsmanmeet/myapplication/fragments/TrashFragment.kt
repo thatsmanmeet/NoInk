@@ -21,14 +21,15 @@ import com.thatsmanmeet.myapplication.room.trash.TrashViewModel
 
 class TrashFragment : Fragment(), ITrashRVAdapter {
 
-    private lateinit var binding: FragmentTrashBinding
+    private var _binding: FragmentTrashBinding? = null
+    private val binding get() = _binding!!
     private lateinit var viewModel: TrashViewModel
     private lateinit var notesViewModel: NoteViewModel
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentTrashBinding.inflate(layoutInflater, container, false)
+        _binding = FragmentTrashBinding.inflate(layoutInflater, container, false)
         setHasOptionsMenu(true)
         // Setting up the recyclerview
         binding.rvShowTrash.layoutManager =
@@ -134,6 +135,12 @@ class TrashFragment : Fragment(), ITrashRVAdapter {
             }
         }
         return true
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+        viewModel.allTrashNotes.removeObservers(requireActivity())
     }
 
 }

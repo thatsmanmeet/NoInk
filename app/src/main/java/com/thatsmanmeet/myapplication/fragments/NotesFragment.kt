@@ -25,15 +25,16 @@ import com.thatsmanmeet.myapplication.room.trash.TrashViewModel
 
 class NotesFragment : Fragment(), INotesRVAdapter {
 
-    private lateinit var binding: FragmentNotesBinding
+    private var _binding: FragmentNotesBinding? = null
     private lateinit var viewModel : NoteViewModel
     private lateinit var trashViewModel: TrashViewModel
     private lateinit var sharedPreferences: SharedPreferences
+    private val binding get() = _binding!!
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentNotesBinding.inflate(inflater,container,false)
+        _binding = FragmentNotesBinding.inflate(inflater,container,false)
         setHasOptionsMenu(true) // this will allow the fragment to have the menu in top bar
 
         // setup shared preferences
@@ -183,4 +184,10 @@ class NotesFragment : Fragment(), INotesRVAdapter {
         return true
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+        viewModel.allNotes.removeObservers(requireActivity())
+        trashViewModel.allTrashNotes.removeObservers(requireActivity())
+    }
 }

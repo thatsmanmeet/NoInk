@@ -23,14 +23,15 @@ import com.thatsmanmeet.myapplication.room.todo.TodoViewModel
 
 class TodoFragment : Fragment(), TodoAdapter.TodoInterface {
 
-    private lateinit var binding : FragmentTodoBinding
+    private var _binding : FragmentTodoBinding? = null
+    private val binding get() = _binding!!
     private lateinit var viewModel : TodoViewModel
-    private lateinit var adapter: TodoAdapter
+    private var adapter: TodoAdapter? = null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentTodoBinding.inflate(inflater,container,false)
+        _binding = FragmentTodoBinding.inflate(inflater,container,false)
         setHasOptionsMenu(true)
 
         // setup the recyclerview
@@ -43,9 +44,9 @@ class TodoFragment : Fragment(), TodoAdapter.TodoInterface {
             this, ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().application)
         )[TodoViewModel::class.java]
         viewModel.allTodos.observe(viewLifecycleOwner) { list ->
-            adapter.updateList(list)
+            adapter!!.updateList(list)
 
-            if (adapter.allTodo.isEmpty()) {
+            if (adapter!!.allTodo.isEmpty()) {
                 binding.tvNoTodos.visibility = View.VISIBLE
             } else {
                 binding.tvNoTodos.visibility = View.INVISIBLE
@@ -79,7 +80,7 @@ class TodoFragment : Fragment(), TodoAdapter.TodoInterface {
                     .setTitle("Delete")
                     .setMessage("Do you want to delete all completed todos ?")
                     .setPositiveButton("Yes"){_,_->
-                        for(todo in adapter.allTodo){
+                        for(todo in adapter!!.allTodo){
                             if(todo.isChecked){
                                 viewModel.deleteTodo(todo)
                                 isDeleted = true
@@ -181,6 +182,12 @@ class TodoFragment : Fragment(), TodoAdapter.TodoInterface {
                 .setTextColor(ResourcesCompat.getColor(resources, color, null))
             i++
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        adapter = null
+        _binding = null
     }
 
 }

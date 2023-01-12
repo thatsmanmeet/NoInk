@@ -16,4 +16,9 @@
         android:icon="@drawable/ic_trash"
         android:id="@+id/miTrash"/>
 
+    <item
+        android:title="Settings"
+        android:icon="@drawable/ic_settings"
+        android:id="@+id/miSettings"/>
+
 </menu>

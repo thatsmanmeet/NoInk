@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import com.thatsmanmeet.myapplication.R
 import com.thatsmanmeet.myapplication.databinding.ActivityMainBinding
 import com.thatsmanmeet.myapplication.fragments.NotesFragment
+import com.thatsmanmeet.myapplication.fragments.SettingsFragment
 import com.thatsmanmeet.myapplication.fragments.TodoFragment
 import com.thatsmanmeet.myapplication.fragments.TrashFragment
 
@@ -20,14 +21,13 @@ class MainActivity : AppCompatActivity() {
     private val notesFragment = NotesFragment()
     private val todoFragment = TodoFragment()
     private val trashFragment = TrashFragment()
+    private val settingsFragment = SettingsFragment()
     @SuppressLint("UseCompatLoadingForDrawables")
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-
         setActionBar()
         window.navigationBarColor = getColor(R.color.black)
         setCurrentFragment(todoFragment)
@@ -41,6 +41,9 @@ class MainActivity : AppCompatActivity() {
                 }
                 R.id.miTrash -> {
                     setCurrentFragment(trashFragment)
+                }
+                R.id.miSettings -> {
+                    setCurrentFragment(settingsFragment)
                 }
             }
             true
@@ -86,6 +89,8 @@ class MainActivity : AppCompatActivity() {
                 binding.bottomNav.menu.getItem(1).isChecked = true
             } else if (currentFragment.contains("TrashFragment")) {
                 binding.bottomNav.menu.getItem(2).isChecked = true
+            } else if(currentFragment.contains("SettingsFragment")){
+                binding.bottomNav.menu.getItem(3).isChecked = true
             }
         }
     }
@@ -137,5 +142,4 @@ class MainActivity : AppCompatActivity() {
         }
         super.onConfigurationChanged(newConfig)
     }
-
 }
