@@ -3,7 +3,6 @@ package com.thatsmanmeet.myapplication.activities
 import android.content.res.Configuration
 import android.os.Bundle
 import android.text.Html
-import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem

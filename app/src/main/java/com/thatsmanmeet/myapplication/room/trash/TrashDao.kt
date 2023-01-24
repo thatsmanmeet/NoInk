@@ -12,7 +12,7 @@ interface TrashDao {
     @Delete
     suspend fun delete(trash: Trash)
 
-    @Query("select * from trash_table order by id DESC")
+    @Query("select * from trash_table order by id ASC")
     fun getAllNotes() : LiveData<List<Trash>>
 
     @Query("delete from trash_table")
