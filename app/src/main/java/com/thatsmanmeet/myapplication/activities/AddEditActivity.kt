@@ -275,6 +275,7 @@ class AddEditActivity : AppCompatActivity() {
                             noteBackgroundColor = colorList[checkedItem].colorInt
                         }
                     }
+                    noteBackgroundColor = colorList[checkedItem].colorInt
                     inflatedMenu?.findItem(R.id.action_pick_color)?.icon?.setTint(ContextCompat.getColor(this,noteBackgroundColor))
                 }
                 builder.show()

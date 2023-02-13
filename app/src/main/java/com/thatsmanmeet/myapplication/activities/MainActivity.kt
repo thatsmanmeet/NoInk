@@ -20,6 +20,7 @@ class MainActivity : AppCompatActivity() {
     private val notesFragment = NotesFragment()
     private val todoFragment = TodoFragment()
     private val trashFragment = TrashFragment()
+    private var fragmentManager = supportFragmentManager
     @SuppressLint("UseCompatLoadingForDrawables")
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
@@ -68,14 +69,15 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setCurrentFragment(fragment: Fragment) {
-        supportFragmentManager.beginTransaction().apply {
+
+        fragmentManager.beginTransaction().apply {
             this.replace(R.id.frameContainer, fragment)
             if (supportFragmentManager.fragments.isNotEmpty()) {
                 this.addToBackStack(null)
             }
             this.commit()
         }
-        supportFragmentManager.addOnBackStackChangedListener {
+        fragmentManager.addOnBackStackChangedListener {
             // find the current fragment and check the string
             val currentFragment = supportFragmentManager.findFragmentById(R.id.frameContainer).toString()
             if (currentFragment.contains("TodoFragment")) {
